@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -39,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private class SyncUserTable extends AsyncTask<Void, Void, String> {
         //Explicit
         private Context context;
-        private String myURL, myUserString, myPasswordString;
+        private String myURL, myUserString, myPasswordString, truePassword;
         private boolean statusABoolean = true;
 
         public SyncUserTable(Context context, String myURL, String myUserString, String myPasswordString) {
@@ -79,14 +80,18 @@ public class MainActivity extends AppCompatActivity {
                 for (int i = 0;i < jsonArray.length();i++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                     if (myUserString.equals(jsonObject.getString("User"))) {
+                        truePassword = jsonObject.getString("Password");
                         statusABoolean = false;
-                    } else if (statusABoolean) {
-                        MyAlert myAlert = new MyAlert();
-                        myAlert.myDialog(context, "ไม่พบผู้ใช้", "ไม่มี " + myUserString + " ในฐานข้อมูล");
-                    } else {
-
                     }
-
+                }
+                if (statusABoolean) {
+                    MyAlert myAlert = new MyAlert();
+                    myAlert.myDialog(context, "ไม่พบผู้ใช้", "ไม่มี " + myUserString + " ในฐานข้อมูล");
+                } else if (!myPasswordString.equals(truePassword)) {
+                    MyAlert myAlert = new MyAlert();
+                    myAlert.myDialog(context, "รหัสผ่านผิด", "กรุณากรอกรหัสผ่านใหม่");
+                } else {
+                    Toast.makeText(context,"Welcome", Toast.LENGTH_SHORT).show();
                 }
             } catch (Exception e) {
                 Log.d("ShopV1", "e onPost ==> " + e.toString());
