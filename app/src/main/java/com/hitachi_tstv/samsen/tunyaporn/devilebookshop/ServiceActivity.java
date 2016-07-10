@@ -12,6 +12,9 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 //Main Class
 public class ServiceActivity extends AppCompatActivity {
     //Explicit
@@ -50,6 +53,7 @@ public class ServiceActivity extends AppCompatActivity {
         private Context context;
         private String myURL;
         private ListView myListView;
+        private String[] bookString, priceStrings, iconStrings;
 
         public SyncProduct(Context context, String myURL, ListView myListView) {
             this.context = context;
@@ -78,14 +82,29 @@ public class ServiceActivity extends AppCompatActivity {
         @Override
         //On post Method คือสิ่งที่ทำหลังทำงานเสร็จ
         protected void onPostExecute(String s) {
+            super.onPostExecute(s);
             Log.d("ShopV2", "JSON ==> " + s);
 
-//            try {
-//
-//            } catch (Exception e) {
-//                Log.d("ShopV2", "e onPost ==> " + e.toString());
-//            }
-            super.onPostExecute(s);
+            try {
+                JSONArray jsonArray = new JSONArray(s);
+
+                bookString = new String[jsonArray.length()];
+                priceStrings = new String[jsonArray.length()];
+                iconStrings = new String[jsonArray.length()];
+
+                for (int i = 0;i < jsonArray.length();i++) {
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    bookString[i] = jsonObject.getString("Name");
+                    priceStrings[i] = jsonObject.getString("Price");
+                    iconStrings[i] = jsonObject.getString("Cover");
+                }
+
+                MyAdaptor myAdaptor = new MyAdaptor(context,bookString,priceStrings,iconStrings);
+                myListView.setAdapter(myAdaptor);
+
+            } catch (Exception e) {
+                Log.d("ShopV2", "e onPost ==> " + e.toString());
+            }
         }
     }
 
