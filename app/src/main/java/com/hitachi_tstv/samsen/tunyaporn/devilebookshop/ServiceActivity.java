@@ -1,10 +1,13 @@
 package com.hitachi_tstv.samsen.tunyaporn.devilebookshop;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -81,7 +84,7 @@ public class ServiceActivity extends AppCompatActivity {
 
         @Override
         //On post Method คือสิ่งที่ทำหลังทำงานเสร็จ
-        protected void onPostExecute(String s) {
+        protected void onPostExecute(final String s) {
             super.onPostExecute(s);
             Log.d("ShopV2", "JSON ==> " + s);
 
@@ -101,6 +104,19 @@ public class ServiceActivity extends AppCompatActivity {
 
                 MyAdaptor myAdaptor = new MyAdaptor(context,bookString,priceStrings,iconStrings);
                 myListView.setAdapter(myAdaptor);
+
+                myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Intent intent = new Intent(ServiceActivity.this,DetailActivity.class);
+                        intent.putExtra("Name", nameString);
+                        intent.putExtra("Surname", surnameString);
+                        intent.putExtra("Book", bookString[position]);
+                        intent.putExtra("Price", priceStrings[position]);
+                        intent.putExtra("Icon", iconStrings[position]);
+                        startActivity(intent);
+                    }
+                });
 
             } catch (Exception e) {
                 Log.d("ShopV2", "e onPost ==> " + e.toString());
