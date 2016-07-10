@@ -94,7 +94,11 @@ public class MainActivity extends AppCompatActivity {
                     myAlert.myDialog(context, "รหัสผ่านผิด", "กรุณากรอกรหัสผ่านใหม่");
                 } else {
                     Toast.makeText(context,"Welcome " + loginNameString + " " + loginSurnameString, Toast.LENGTH_SHORT).show();
-
+                    Intent intent = new Intent(MainActivity.this,ServiceActivity.class);
+                    intent.putExtra("Name", loginNameString);
+                    intent.putExtra("Surname", loginSurnameString);
+                    startActivity(intent);
+                    finish();
                 }
             } catch (Exception e) {
                 Log.d("ShopV1", "e onPost ==> " + e.toString());
