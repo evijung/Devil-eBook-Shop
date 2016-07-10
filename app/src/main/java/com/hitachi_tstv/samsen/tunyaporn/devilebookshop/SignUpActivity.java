@@ -23,7 +23,6 @@ public class SignUpActivity extends AppCompatActivity {
     private String nameString, surnameString, userString, passwordString;
     private static final String urlPHP = "http://swiftcodingthai.com/9july/add_user_bell.php";
 
-
     @Override
     //Main Method
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +35,7 @@ public class SignUpActivity extends AppCompatActivity {
         userEditText = (EditText) findViewById(R.id.editText3);
         passwordEditText = (EditText) findViewById(R.id.editText4);
 
+        MyConstant myConstant = new MyConstant();
     }
 
     //Click Sign Method
