@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private class SyncUserTable extends AsyncTask<Void, Void, String> {
         //Explicit
         private Context context;
-        private String myURL, myUserString, myPasswordString, truePassword;
+        private String myURL, myUserString, myPasswordString, truePassword, loginNameString, loginSurnameString;
         private boolean statusABoolean = true;
 
         public SyncUserTable(Context context, String myURL, String myUserString, String myPasswordString) {
@@ -81,6 +81,8 @@ public class MainActivity extends AppCompatActivity {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                     if (myUserString.equals(jsonObject.getString("User"))) {
                         truePassword = jsonObject.getString("Password");
+                        loginNameString = jsonObject.getString("Name");
+                        loginSurnameString = jsonObject.getString("Surname");
                         statusABoolean = false;
                     }
                 }
@@ -91,7 +93,8 @@ public class MainActivity extends AppCompatActivity {
                     MyAlert myAlert = new MyAlert();
                     myAlert.myDialog(context, "รหัสผ่านผิด", "กรุณากรอกรหัสผ่านใหม่");
                 } else {
-                    Toast.makeText(context,"Welcome", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context,"Welcome " + loginNameString + " " + loginSurnameString, Toast.LENGTH_SHORT).show();
+
                 }
             } catch (Exception e) {
                 Log.d("ShopV1", "e onPost ==> " + e.toString());
